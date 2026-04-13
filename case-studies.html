@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Studies — We Are Weebs | Proven Results in Anime & Gaming</title>
+  <meta name="description" content="See how We Are Weebs delivered 3.2M live viewers and 300% ROAS for leading anime, VTuber, and gaming brands through programmatic media." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: '#030305',
+            accent: '#f97316',
+            amber: '#fbbf24',
+            danger: '#ef4444',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #030305;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+    body.modal-open { overflow: hidden; }
+
+    .bg-slide {
+      position: fixed; inset: 0; z-index: 0;
+      background-size: cover; background-position: center; background-repeat: no-repeat;
+      opacity: 0; mix-blend-mode: luminosity; pointer-events: none;
+      will-change: opacity; transform: translateZ(0);
+      animation: bgFade 25s infinite;
+    }
+    .bg-slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1920&q=80'); animation-delay: 0s; }
+    .bg-slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1613376023733-0a73315d9b06?w=1920&q=80'); animation-delay: 5s; }
+    .bg-slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1560972550-aba3456b5564?w=1920&q=80'); animation-delay: 10s; }
+    .bg-slide:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1541562232579-512a21360020?w=1920&q=80'); animation-delay: 15s; }
+    .bg-slide:nth-child(5) { background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?w=1920&q=80'); animation-delay: 20s; }
+    @keyframes bgFade {
+      0% { opacity: 0; }
+      4% { opacity: 0.18; }
+      20% { opacity: 0.18; }
+      24% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    .orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(80px); will-change: transform; transform: translateZ(0); }
+    .orb-1 { width: 420px; height: 420px; background: rgba(249,115,22,0.12); top: -100px; left: -100px; }
+    .orb-2 { width: 350px; height: 350px; background: rgba(239,68,68,0.10); bottom: 10%; right: -80px; }
+    .orb-3 { width: 300px; height: 300px; background: rgba(251,191,36,0.08); top: 50%; left: 40%; }
+
+    .glass {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      will-change: transform; transform: translateZ(0);
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      transition: transform 0.4s cubic-bezier(.22,.61,.36,1), box-shadow 0.4s ease, border-color 0.4s ease;
+      will-change: transform; transform: translateZ(0);
+    }
+    .glass-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(249,115,22,0.1);
+      border-color: rgba(249,115,22,0.2);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #f97316, #fbbf24, #ef4444);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-active {
+      text-shadow: 0 0 12px rgba(249,115,22,0.8), 0 0 24px rgba(249,115,22,0.4);
+      color: #f97316 !important;
+    }
+
+    .navbar-scrolled {
+      background: rgba(3,3,5,0.85) !important;
+      border-bottom-color: rgba(255,255,255,0.1) !important;
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(.22,.61,.36,1), transform 0.8s cubic-bezier(.22,.61,.36,1);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: rgba(10,10,18,0.92);
+      backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      max-width: 860px; width: 92%; max-height: 90vh; overflow-y: auto;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.4s cubic-bezier(.22,.61,.36,1);
+    }
+    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+
+    .btn-glow {
+      position: relative; overflow: hidden;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 30px rgba(249,115,22,0.4);
+      transform: translateY(-2px);
+    }
+    .btn-glow::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      transform: translateX(-100%); transition: transform 0.6s ease;
+      pointer-events: none;
+    }
+    .btn-glow:hover::after { transform: translateX(100%); }
+
+    /* Metric counter animation */
+    .metric-value {
+      transition: opacity 0.6s ease;
+    }
+
+    /* Case study image placeholder */
+    .case-img-placeholder {
+      background: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(239,68,68,0.08));
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+    .case-img-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255,255,255,0.01) 20px,
+        rgba(255,255,255,0.01) 40px
+      );
+    }
+
+    /* Metric badge */
+    .metric-badge {
+      background: rgba(249,115,22,0.08);
+      border: 1px solid rgba(249,115,22,0.15);
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: center;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .metric-badge:hover {
+      border-color: rgba(249,115,22,0.3);
+      background: rgba(249,115,22,0.12);
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #030305; }
+    ::-webkit-scrollbar-thumb { background: rgba(249,115,22,0.3); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(249,115,22,0.5); }
+  </style>
+</head>
+<body>
+  <div class="bg-slide"></div>
+  <div class="bg-slide"></div>
+  <div class="bg-slide"></div>
+  <div class="bg-slide"></div>
+  <div class="bg-slide"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-black tracking-tight">
+        <span class="gradient-text">WEAREWEEBS</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="text-sm font-medium tracking-wide uppercase text-gray-400 hover:text-white transition-colors duration-300">Home</a>
+        <a href="solutions.html" class="text-sm font-medium tracking-wide uppercase text-gray-400 hover:text-white transition-colors duration-300">Solutions</a>
+        <a href="case-studies.html" class="nav-active text-sm font-medium tracking-wide uppercase transition-colors duration-300">Case Studies</a>
+        <button onclick="openModal()" class="btn-glow ml-4 px-6 py-2.5 bg-gradient-to-r from-accent to-amber rounded-full text-sm font-bold text-dark">
+          Let's Talk
+        </button>
+      </div>
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden text-white text-2xl">
+        <i class="ph ph-list"></i>
+      </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden border-t border-white/5 px-6 pb-6">
+      <div class="flex flex-col gap-4 pt-4">
+        <a href="index.html" class="text-sm font-medium tracking-wide uppercase text-gray-400">Home</a>
+        <a href="solutions.html" class="text-sm font-medium tracking-wide uppercase text-gray-400">Solutions</a>
+        <a href="case-studies.html" class="nav-active text-sm font-medium tracking-wide uppercase">Case Studies</a>
+        <button onclick="openModal()" class="btn-glow mt-2 px-6 py-2.5 bg-gradient-to-r from-accent to-amber rounded-full text-sm font-bold text-dark w-full">
+          Let's Talk
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="relative z-10 pt-36 pb-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl">
+        <div class="reveal">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-semibold text-amber uppercase tracking-widest mb-6">
+            <i class="ph-fill ph-trophy text-accent"></i>
+            Proven Results
+          </div>
+        </div>
+        <h1 class="reveal text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-6">
+          Success <span class="gradient-text">Stories</span>
+        </h1>
+        <p class="reveal text-lg text-gray-400 leading-relaxed max-w-2xl">
+          Real campaigns. Measurable impact. Here's how we've helped anime studios, VTuber agencies, and gaming publishers shatter their KPIs through programmatic media excellence.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CASE STUDY 1 ===== -->
+  <section class="relative z-10 py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="reveal glass-card overflow-hidden">
+        <div class="grid lg:grid-cols-2">
+          <!-- Left: Visual -->
+          <div class="case-img-placeholder p-8 flex flex-col items-center justify-center text-center">
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent/20 to-danger/10 flex items-center justify-center mb-6">
+              <i class="ph-fill ph-video-camera text-accent text-4xl"></i>
+            </div>
+            <p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">VTuber Campaign</p>
+            <h3 class="text-2xl font-black text-white">Project Stellar</h3>
+            <p class="text-sm text-gray-500 mt-1">Hololive EN × Concert Promotion</p>
+            <!-- Floating metrics -->
+            <div class="grid grid-cols-2 gap-4 mt-8 w-full max-w-xs">
+              <div class="metric-badge">
+                <p class="text-xl font-black gradient-text">3.2M</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1">Live Viewers</p>
+              </div>
+              <div class="metric-badge">
+                <p class="text-xl font-black gradient-text">47M</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1">Impressions</p>
+              </div>
+              <div class="metric-badge">
+                <p class="text-xl font-black gradient-text">8.4%</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1">CTR</p>
+              </div>
+              <div class="metric-badge">
+                <p class="text-xl font-black gradient-text">$0.03</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1">Cost/View</p>
+              </div>
+            </div>
+          </div>
+          <!-- Right: Content -->
+          <div class="p-8 sm:p-12 flex flex-col justify-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 text-xs font-semibold text-accent uppercase tracking-wider mb-6 w-fit">
+              <i class="ph-fill ph-star"></i> Featured Campaign
+            </div>
+            <h3 class="text-3xl font-black text-white mb-4">
+              Driving 3.2M Concurrent Viewers for a Virtual Concert Launch
+            </h3>
+            <p class="text-gray-400 leading-relaxed mb-6">
+              When a top-tier VTuber agency needed to maximize live viewership for their flagship virtual concert event, they turned to We Are Weebs. Our team deployed a 21-day programmatic blitz across YouTube pre-roll, Twitch display, Twitter/X promoted posts, and premium anime publisher inventory.
+            </p>
+            <p class="text-gray-500 text-sm leading-relaxed mb-8">
+              Using our proprietary audience graph, we identified and activated 14 high-value fan segments across 8 markets, achieving an unprecedented 8.4% click-through rate—more than 6× the industry average for entertainment campaigns. The campaign generated 47 million impressions at a cost-per-completed-view of just $0.03, culminating in a record-breaking 3.2 million simultaneous viewers on concert night.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-8">
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400 border border-white/5">Programmatic Video</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400 border border-white/5">Audience Targeting</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400 border border-white/5">Cross-Platform</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400 border border-white/5">Real-Time Bidding</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="ph-fill ph-calendar text-accent"></i>
+                <span class="text-gray-400">Q3 2024</span>
+              </div>
+              <div class="w-px h-4 bg-white/10"></div>
+              <div class="flex items-center gap-2 text-sm">
+                <i class="ph-fill ph-globe text-accent"></i>
+                <span class="text-gray-400">8 Markets</span>
+              </div>
+              <div class="w-px h-4 bg-white/10"></div>
+              <div class="flex items-center gap-2 text-sm">
+                <i class="ph-fill ph-clock text-accent"></i>
+                <span class="text-gray-400">21 Days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CASE STUDY 2 ===== -->
+  <section class="relative z-10 py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="reveal glass-card overflow-hidden">
+        <div class="grid lg:grid-cols-2">
+          <!-- Left: Content (reversed layout) -->
+          <div class="p-8 sm:p-12 flex flex-col justify-center order-2 lg:order-1">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-danger/10 text-xs font-semibold text-danger uppercase tracking-wider mb-6 w-fit">
+              <i class="ph-fill ph-flame"></i> Performance Marketing
+            </div>
+            <h3 class="text-3xl font-black text-white mb-4">
+              300% ROAS on a Gacha Game Global Launch
+            </h3>
+            <p class="text-gray-400 leading-relaxed mb-6">
+              A leading Japanese game publisher partnered with We Are Weebs to orchestrate the global user acquisition strategy for their flagship gacha RPG. The mandate: acquire 1 million high-LTV players across NA, EU, and SEA within the first 30 days of launch—at a target CPI under $2.00.
+            </p>
+            <p class="text-gray-500 text-sm leading-relaxed mb-8">
+              We deployed a multi-format programmatic strategy combining playable ads, rewarded video, and native placements across 18 ad networks and DSPs. Our payer-lookalike models, trained on first-party data from similar titles, enabled us to pinpoint high-value players at scale. The result: 1.4 million installs at a blended CPI of $1.18, with D30 ROAS hitting 300%—exceeding the publisher's target by 50%. Day-7 retention outperformed benchmarks by 40%.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-8">
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400 border border-white/5">Mobile UA</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400 border border-white/5">Playable Ads</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400 border border-white/5">Lookalike Modeling</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-400 border border-white/5">SKAN 4.0</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="flex items-center gap-2 text-sm">
+                <i class="ph-fill ph-calendar text-danger"></i>
+                <span class="text-gray-400">Q1 2025</span>
+              </div>
+              <div class="w-px h-4 bg-white/10"></div>
+              <div class="flex items-center gap-2 text-sm">
+                <i class="ph-fill ph-globe text-danger"></i>
+                <span class="text-gray-400">3 Regions</span>
+              </div>
+              <div class="w-px h-4 bg-white/10"></div>
+              <div class="flex items-center gap-2 text-sm">
+                <i class="ph-fill ph-clock text-danger"></i>
+                <span class="text-gray-400">30 Days</span>
+              </div>
+            </div>
+          </div>
+          <!-- Right: Visual (reversed) -->
+          <div class="case-img-placeholder p-8 flex flex-col items-center justify-center text-center order-1 lg:order-2">
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-danger/20 to-amber/10 flex items-center justify-center mb-6">
+              <i class="ph-fill ph-game-controller text-danger text-4xl"></i>
+            </div>
+            <p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Gacha Game Launch</p>
+            <h3 class="text-2xl font-black text-white">Operation Summon</h3>
+            <p class="text-sm text-gray-500 mt-1">Global RPG × User Acquisition</p>
+            <div class="grid grid-cols-2 gap-4 mt-8 w-full max-w-xs">
+              <div class="metric-badge">
+                <p class="text-xl font-black gradient-text">1.4M</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1">Installs</p>
+              </div>
+              <div class="metric-badge">
+                <p class="text-xl font-black gradient-text">300%</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1">ROAS</p>
+              </div>
+              <div class="metric-badge">
+                <p class="text-xl font-black gradient-text">$1.18</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1">CPI</p>
+              </div>
+              <div class="metric-badge">
+                <p class="text-xl font-black gradient-text">+40%</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-wider mt-1">D7 Retention</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="relative z-10 py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center reveal">
+      <div class="glass-card p-12 sm:p-16">
+        <h2 class="text-3xl sm:text-4xl font-black mb-4">Want Results Like <span class="gradient-text">These</span>?</h2>
+        <p class="text-gray-400 mb-8 max-w-lg mx-auto">Every IP is unique. Let's build a programmatic strategy that turns your anime, VTuber, or gaming brand into a case study of its own.</p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <button onclick="openModal()" class="btn-glow px-8 py-4 bg-gradient-to-r from-accent to-amber rounded-full text-base font-bold text-dark">
+            Start Your Campaign
+          </button>
+          <a href="solutions.html" class="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/10 text-base font-medium text-white hover:border-accent/40 hover:bg-white/5 transition-all duration-300">
+            View Solutions
+            <i class="ph ph-arrow-right text-lg"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="relative z-10 border-t border-white/5 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div>
+          <a href="index.html" class="text-xl font-black gradient-text">WEAREWEEBS</a>
+          <p class="text-sm text-gray-500 mt-4 leading-relaxed">Precision programmatic media for the anime, VTuber, and gaming industries. We connect 2D worlds to 3D results.</p>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-4">Navigate</h4>
+          <div class="flex flex-col gap-3">
+            <a href="index.html" class="text-sm text-gray-400 hover:text-accent transition-colors">Home</a>
+            <a href="solutions.html" class="text-sm text-gray-400 hover:text-accent transition-colors">Solutions</a>
+            <a href="case-studies.html" class="text-sm text-gray-400 hover:text-accent transition-colors">Case Studies</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-4">Services</h4>
+          <div class="flex flex-col gap-3">
+            <span class="text-sm text-gray-500">VTuber Promotion</span>
+            <span class="text-sm text-gray-500">Merch & Figure Sales</span>
+            <span class="text-sm text-gray-500">Gacha Game UA</span>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-4">Connect</h4>
+          <div class="flex gap-4 mt-2">
+            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent/30 transition-all duration-300">
+              <i class="ph ph-twitter-logo text-lg"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent/30 transition-all duration-300">
+              <i class="ph ph-instagram-logo text-lg"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent/30 transition-all duration-300">
+              <i class="ph ph-linkedin-logo text-lg"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent/30 transition-all duration-300">
+              <i class="ph ph-discord-logo text-lg"></i>
+            </a>
+          </div>
+          <p class="text-sm text-gray-500 mt-4">hello@weareweebs.com</p>
+        </div>
+      </div>
+      <div class="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-gray-600">&copy; 2025 We Are Weebs. All rights reserved.</p>
+        <p class="text-xs text-gray-600">Engineered with <i class="ph-fill ph-heart text-danger"></i> for the otaku economy.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== LETS TALK MODAL ===== -->
+  <div id="contactModal" class="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal-box p-0" onclick="event.stopPropagation()">
+      <div class="grid md:grid-cols-5">
+        <div class="md:col-span-2 p-8 sm:p-10 border-b md:border-b-0 md:border-r border-white/5">
+          <h3 class="text-2xl font-black mb-2">Let's Talk</h3>
+          <p class="text-sm text-gray-400 mb-8 leading-relaxed">Ready to dominate the otaku economy? Reach out and our strategy team will respond within 24 hours.</p>
+          <div class="space-y-5">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ph-fill ph-envelope text-accent"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase tracking-wider">Email</p>
+                <p class="text-sm text-white font-medium">hello@weareweebs.com</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ph-fill ph-phone text-accent"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase tracking-wider">Phone</p>
+                <p class="text-sm text-white font-medium">8532831803</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ph-fill ph-map-pin text-accent"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase tracking-wider">HQ</p>
+                <p class="text-sm text-white font-medium">ABESIT</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-8">
+            <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-500 hover:text-accent transition-colors"><i class="ph ph-twitter-logo"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-500 hover:text-accent transition-colors"><i class="ph ph-linkedin-logo"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-500 hover:text-accent transition-colors"><i class="ph ph-discord-logo"></i></a>
+          </div>
+        </div>
+        <div class="md:col-span-3 p-8 sm:p-10 relative">
+          <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all">
+            <i class="ph ph-x text-lg"></i>
+          </button>
+          <form id="contactForm" onsubmit="handleFormSubmit(event)">
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">First Name</label>
+                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors" placeholder="Sora" />
+              </div>
+              <div>
+                <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Last Name</label>
+                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors" placeholder="Tokino" />
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Work Email</label>
+              <input type="email" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors" placeholder="sora@hololive.tv" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Company</label>
+              <input type="text" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors" placeholder="Cover Corp." />
+            </div>
+            <div class="mb-6">
+              <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">How can we help?</label>
+              <textarea rows="3" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors resize-none" placeholder="Tell us about your campaign goals..."></textarea>
+            </div>
+            <button type="submit" class="btn-glow w-full px-6 py-3.5 bg-gradient-to-r from-accent to-amber rounded-xl text-sm font-bold text-dark">
+              Send Message
+              <i class="ph ph-paper-plane-tilt ml-2"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    const modal = document.getElementById('contactModal');
+    function openModal() { modal.classList.add('open'); document.body.classList.add('modal-open'); }
+    function closeModal() { modal.classList.remove('open'); document.body.classList.remove('modal-open'); }
+    function handleOverlayClick(e) { if (e.target === modal) closeModal(); }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.innerHTML = '<i class="ph-fill ph-check-circle mr-2"></i> Message Sent!';
+      btn.classList.remove('from-accent', 'to-amber');
+      btn.classList.add('from-green-500', 'to-emerald-400');
+      setTimeout(() => {
+        closeModal();
+        btn.innerHTML = 'Send Message <i class="ph ph-paper-plane-tilt ml-2"></i>';
+        btn.classList.remove('from-green-500', 'to-emerald-400');
+        btn.classList.add('from-accent', 'to-amber');
+        e.target.reset();
+      }, 2000);
+    }
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('navbar-scrolled', window.scrollY > 50);
+    });
+
+    function toggleMobileMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealElements.forEach((el) => revealObserver.observe(el));
+  </script>
+</body>
+</html>

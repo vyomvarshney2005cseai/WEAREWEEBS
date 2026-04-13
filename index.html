@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>We Are Weebs — Programmatic Media for Anime, VTuber & Gaming</title>
+  <meta name="description" content="We Are Weebs is a programmatic media marketing agency connecting 2D talent with 3D audiences across the anime, VTuber, and gaming industries." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: '#030305',
+            accent: '#f97316',
+            amber: '#fbbf24',
+            danger: '#ef4444',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #030305;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+    body.modal-open { overflow: hidden; }
+
+    /* Background slideshow */
+    .bg-slide {
+      position: fixed; inset: 0; z-index: 0;
+      background-size: cover; background-position: center; background-repeat: no-repeat;
+      opacity: 0; mix-blend-mode: luminosity; pointer-events: none;
+      will-change: opacity; transform: translateZ(0);
+      animation: bgFade 25s infinite;
+    }
+    .bg-slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1920&q=80'); animation-delay: 0s; }
+    .bg-slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1613376023733-0a73315d9b06?w=1920&q=80'); animation-delay: 5s; }
+    .bg-slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1560972550-aba3456b5564?w=1920&q=80'); animation-delay: 10s; }
+    .bg-slide:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1541562232579-512a21360020?w=1920&q=80'); animation-delay: 15s; }
+    .bg-slide:nth-child(5) { background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?w=1920&q=80'); animation-delay: 20s; }
+    @keyframes bgFade {
+      0% { opacity: 0; }
+      4% { opacity: 0.18; }
+      20% { opacity: 0.18; }
+      24% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    .orb {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      filter: blur(80px);
+      will-change: transform; transform: translateZ(0);
+    }
+    .orb-1 { width: 420px; height: 420px; background: rgba(249,115,22,0.12); top: -100px; left: -100px; }
+    .orb-2 { width: 350px; height: 350px; background: rgba(239,68,68,0.10); bottom: 10%; right: -80px; }
+    .orb-3 { width: 300px; height: 300px; background: rgba(251,191,36,0.08); top: 50%; left: 40%; }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.08);
+      will-change: transform; transform: translateZ(0);
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      transition: transform 0.4s cubic-bezier(.22,.61,.36,1), box-shadow 0.4s ease, border-color 0.4s ease;
+      will-change: transform; transform: translateZ(0);
+    }
+    .glass-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(249,115,22,0.12);
+      border-color: rgba(249,115,22,0.25);
+    }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #f97316, #fbbf24, #ef4444);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Nav glow for active */
+    .nav-active {
+      text-shadow: 0 0 12px rgba(249,115,22,0.8), 0 0 24px rgba(249,115,22,0.4);
+      color: #f97316 !important;
+    }
+
+    /* Navbar scroll */
+    .navbar-scrolled {
+      background: rgba(3,3,5,0.85) !important;
+      border-bottom-color: rgba(255,255,255,0.1) !important;
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(.22,.61,.36,1), transform 0.8s cubic-bezier(.22,.61,.36,1);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* Marquee */
+    .marquee-track {
+      display: flex; width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    /* Modal overlay */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: rgba(10,10,18,0.92);
+      backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      max-width: 860px; width: 92%; max-height: 90vh; overflow-y: auto;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.4s cubic-bezier(.22,.61,.36,1);
+    }
+    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+
+    /* CTA button glow */
+    .btn-glow {
+      position: relative; overflow: hidden;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 30px rgba(249,115,22,0.4);
+      transform: translateY(-2px);
+    }
+    .btn-glow::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+      pointer-events: none;
+    }
+    .btn-glow:hover::after { transform: translateX(100%); }
+
+    /* Stat pulse */
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 40px rgba(249,115,22,0.15); }
+      50% { box-shadow: 0 0 80px rgba(249,115,22,0.3); }
+    }
+    .stat-pulse { animation: pulse-glow 3s ease-in-out infinite; }
+
+    /* Hero floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #030305; }
+    ::-webkit-scrollbar-thumb { background: rgba(249,115,22,0.3); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(249,115,22,0.5); }
+  </style>
+</head>
+<body>
+  <!-- Background slideshow -->
+  <div class="bg-slide"></div>
+  <div class="bg-slide"></div>
+  <div class="bg-slide"></div>
+  <div class="bg-slide"></div>
+  <div class="bg-slide"></div>
+  <!-- Ambient orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-black tracking-tight">
+        <span class="gradient-text">WEAREWEEBS</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-active text-sm font-medium tracking-wide uppercase transition-colors duration-300">Home</a>
+        <a href="solutions.html" class="text-sm font-medium tracking-wide uppercase text-gray-400 hover:text-white transition-colors duration-300">Solutions</a>
+        <a href="case-studies.html" class="text-sm font-medium tracking-wide uppercase text-gray-400 hover:text-white transition-colors duration-300">Case Studies</a>
+        <button onclick="openModal()" class="btn-glow ml-4 px-6 py-2.5 bg-gradient-to-r from-accent to-amber rounded-full text-sm font-bold text-dark">
+          Let's Talk
+        </button>
+      </div>
+      <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden text-white text-2xl">
+        <i class="ph ph-list"></i>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-white/5 px-6 pb-6">
+      <div class="flex flex-col gap-4 pt-4">
+        <a href="index.html" class="nav-active text-sm font-medium tracking-wide uppercase">Home</a>
+        <a href="solutions.html" class="text-sm font-medium tracking-wide uppercase text-gray-400">Solutions</a>
+        <a href="case-studies.html" class="text-sm font-medium tracking-wide uppercase text-gray-400">Case Studies</a>
+        <button onclick="openModal()" class="btn-glow mt-2 px-6 py-2.5 bg-gradient-to-r from-accent to-amber rounded-full text-sm font-bold text-dark w-full">
+          Let's Talk
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="relative z-10 min-h-screen flex items-center pt-24 pb-16">
+    <div class="max-w-7xl mx-auto px-6 w-full">
+      <div class="max-w-4xl">
+        <div class="reveal">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-semibold text-amber uppercase tracking-widest mb-8">
+            <i class="ph-fill ph-lightning text-accent"></i>
+            Programmatic Media Agency
+          </div>
+        </div>
+        <h1 class="reveal text-5xl sm:text-6xl lg:text-8xl font-black leading-[0.95] tracking-tight mb-8">
+          Connect<br/>
+          <span class="gradient-text">2D Talent</span> with<br/>
+          <span class="text-white">3D Audiences</span>
+        </h1>
+        <p class="reveal text-lg sm:text-xl text-gray-400 max-w-2xl mb-12 leading-relaxed">
+          We engineer precision-targeted programmatic campaigns that bridge the gap between anime, VTuber, and gaming IP holders and the audiences that worship them—at scale.
+        </p>
+        <div class="reveal flex flex-wrap gap-4">
+          <a href="solutions.html" class="btn-glow inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-accent to-amber rounded-full text-base font-bold text-dark">
+            Explore Solutions
+            <i class="ph ph-arrow-right text-lg"></i>
+          </a>
+          <a href="case-studies.html" class="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/10 text-base font-medium text-white hover:border-accent/40 hover:bg-white/5 transition-all duration-300">
+            View Case Studies
+            <i class="ph ph-play-circle text-lg"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Hero decoration -->
+    <div class="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2 opacity-20" style="animation: float 6s ease-in-out infinite;">
+      <svg width="300" height="300" viewBox="0 0 300 300" fill="none">
+        <circle cx="150" cy="150" r="140" stroke="url(#heroGrad)" stroke-width="1.5" stroke-dasharray="8 6"/>
+        <circle cx="150" cy="150" r="100" stroke="url(#heroGrad)" stroke-width="1" stroke-dasharray="4 8"/>
+        <circle cx="150" cy="150" r="60" stroke="url(#heroGrad)" stroke-width="0.8"/>
+        <circle cx="150" cy="150" r="6" fill="#f97316"/>
+        <defs>
+          <linearGradient id="heroGrad" x1="0" y1="0" x2="300" y2="300">
+            <stop offset="0%" stop-color="#f97316"/>
+            <stop offset="50%" stop-color="#fbbf24"/>
+            <stop offset="100%" stop-color="#ef4444"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE SECTION ===== -->
+  <section class="relative z-10 py-12 border-y border-white/5 overflow-hidden">
+    <div class="reveal">
+      <p class="text-center text-xs font-semibold uppercase tracking-[0.3em] text-gray-500 mb-8">Trusted by Industry Leaders</p>
+      <div class="overflow-hidden">
+        <div class="marquee-track">
+          <!-- Repeat set twice for infinite loop -->
+          <div class="flex items-center gap-16 px-8">
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">STUDIO GHIBLI</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">CRUNCHYROLL</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">HOLOLIVE</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">BANDAI NAMCO</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">ANIPLEX</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">KADOKAWA</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">NIJISANJI</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">MIHOYO</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">VSHOJO</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">FUNIMATION</span>
+          </div>
+          <div class="flex items-center gap-16 px-8">
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">STUDIO GHIBLI</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">CRUNCHYROLL</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">HOLOLIVE</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">BANDAI NAMCO</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">ANIPLEX</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">KADOKAWA</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">NIJISANJI</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">MIHOYO</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">VSHOJO</span>
+            <span class="text-2xl font-black text-white/10 whitespace-nowrap hover:text-white/25 transition-colors duration-500">FUNIMATION</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT US SECTION ===== -->
+  <section class="relative z-10 py-28">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="reveal">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-accent mb-4">Who We Are</p>
+            <h2 class="text-4xl sm:text-5xl font-black leading-tight mb-6">
+              Data-Driven Campaigns for the <span class="gradient-text">Otaku Economy</span>
+            </h2>
+          </div>
+          <div class="reveal">
+            <p class="text-gray-400 text-lg leading-relaxed mb-6">
+              We Are Weebs is a performance marketing agency built from the ground up for the anime, VTuber, and gaming verticals. We leverage real-time bidding platforms, first-party audience data, and culturally resonant creative to deliver measurable results at unprecedented scale.
+            </p>
+            <p class="text-gray-500 leading-relaxed mb-8">
+              Our proprietary audience graph maps over 400 million otaku-aligned user profiles across 12 programmatic exchanges, enabling hyper-targeted campaigns that outperform conventional media buying by 3–7× on ROAS.
+            </p>
+          </div>
+          <div class="reveal flex flex-wrap gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+                <i class="ph-fill ph-chart-line-up text-accent text-lg"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-300">Real-Time Optimization</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-amber/10 flex items-center justify-center">
+                <i class="ph-fill ph-globe text-amber text-lg"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-300">Global Reach</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-danger/10 flex items-center justify-center">
+                <i class="ph-fill ph-shield-check text-danger text-lg"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-300">Brand Safe</span>
+            </div>
+          </div>
+        </div>
+        <!-- Stat Card -->
+        <div class="reveal flex justify-center">
+          <div class="glass-card stat-pulse p-12 text-center max-w-sm w-full">
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent/20 to-danger/10 flex items-center justify-center mx-auto mb-6">
+              <i class="ph-fill ph-eye text-accent text-4xl"></i>
+            </div>
+            <p class="text-6xl sm:text-7xl font-black gradient-text mb-3">12.5B+</p>
+            <p class="text-lg font-semibold text-white mb-2">Impressions Delivered</p>
+            <p class="text-sm text-gray-500">Across anime, VTuber & gaming verticals in FY2025</p>
+            <div class="mt-8 pt-6 border-t border-white/5 grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-2xl font-bold text-white">47</p>
+                <p class="text-xs text-gray-500">Markets</p>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-white">4.2×</p>
+                <p class="text-xs text-gray-500">Avg. ROAS</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MINI CTA SECTION ===== -->
+  <section class="relative z-10 py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center reveal">
+      <div class="glass-card p-12 sm:p-16">
+        <h2 class="text-3xl sm:text-4xl font-black mb-4">Ready to Scale Your <span class="gradient-text">IP Revenue</span>?</h2>
+        <p class="text-gray-400 mb-8 max-w-lg mx-auto">Let's discuss how programmatic media can unlock new audiences for your anime, VTuber, or gaming brand.</p>
+        <button onclick="openModal()" class="btn-glow px-8 py-4 bg-gradient-to-r from-accent to-amber rounded-full text-base font-bold text-dark">
+          Start a Conversation
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="relative z-10 border-t border-white/5 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div>
+          <a href="index.html" class="text-xl font-black gradient-text">WEAREWEEBS</a>
+          <p class="text-sm text-gray-500 mt-4 leading-relaxed">Precision programmatic media for the anime, VTuber, and gaming industries. We connect 2D worlds to 3D results.</p>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-4">Navigate</h4>
+          <div class="flex flex-col gap-3">
+            <a href="index.html" class="text-sm text-gray-400 hover:text-accent transition-colors">Home</a>
+            <a href="solutions.html" class="text-sm text-gray-400 hover:text-accent transition-colors">Solutions</a>
+            <a href="case-studies.html" class="text-sm text-gray-400 hover:text-accent transition-colors">Case Studies</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-4">Services</h4>
+          <div class="flex flex-col gap-3">
+            <span class="text-sm text-gray-500">VTuber Promotion</span>
+            <span class="text-sm text-gray-500">Merch & Figure Sales</span>
+            <span class="text-sm text-gray-500">Gacha Game UA</span>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-4">Connect</h4>
+          <div class="flex gap-4 mt-2">
+            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent/30 transition-all duration-300">
+              <i class="ph ph-twitter-logo text-lg"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent/30 transition-all duration-300">
+              <i class="ph ph-instagram-logo text-lg"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent/30 transition-all duration-300">
+              <i class="ph ph-linkedin-logo text-lg"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent/30 transition-all duration-300">
+              <i class="ph ph-discord-logo text-lg"></i>
+            </a>
+          </div>
+          <p class="text-sm text-gray-500 mt-4">hello@weareweebs.com</p>
+        </div>
+      </div>
+      <div class="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-gray-600">&copy; 2025 We Are Weebs. All rights reserved.</p>
+        <p class="text-xs text-gray-600">Engineered with <i class="ph-fill ph-heart text-danger"></i> for the otaku economy.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== LETS TALK MODAL ===== -->
+  <div id="contactModal" class="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal-box p-0" onclick="event.stopPropagation()">
+      <div class="grid md:grid-cols-5">
+        <!-- Left: Info -->
+        <div class="md:col-span-2 p-8 sm:p-10 border-b md:border-b-0 md:border-r border-white/5">
+          <h3 class="text-2xl font-black mb-2">Let's Talk</h3>
+          <p class="text-sm text-gray-400 mb-8 leading-relaxed">Ready to dominate the otaku economy? Reach out and our strategy team will respond within 24 hours.</p>
+          <div class="space-y-5">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ph-fill ph-envelope text-accent"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase tracking-wider">Email</p>
+                <p class="text-sm text-white font-medium">hello@weareweebs.com</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ph-fill ph-phone text-accent"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase tracking-wider">Phone</p>
+                <p class="text-sm text-white font-medium">8532831803</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ph-fill ph-map-pin text-accent"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase tracking-wider">HQ</p>
+                <p class="text-sm text-white font-medium">ABESIT</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-8">
+            <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-500 hover:text-accent transition-colors"><i class="ph ph-twitter-logo"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-500 hover:text-accent transition-colors"><i class="ph ph-linkedin-logo"></i></a>
+            <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-500 hover:text-accent transition-colors"><i class="ph ph-discord-logo"></i></a>
+          </div>
+        </div>
+        <!-- Right: Form -->
+        <div class="md:col-span-3 p-8 sm:p-10 relative">
+          <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all">
+            <i class="ph ph-x text-lg"></i>
+          </button>
+          <form id="contactForm" onsubmit="handleFormSubmit(event)">
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">First Name</label>
+                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors" placeholder="Sora" />
+              </div>
+              <div>
+                <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Last Name</label>
+                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors" placeholder="Tokino" />
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Work Email</label>
+              <input type="email" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors" placeholder="sora@hololive.tv" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">Company</label>
+              <input type="text" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors" placeholder="Cover Corp." />
+            </div>
+            <div class="mb-6">
+              <label class="block text-xs text-gray-500 uppercase tracking-wider mb-2">How can we help?</label>
+              <textarea rows="3" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/8 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-accent/40 transition-colors resize-none" placeholder="Tell us about your campaign goals..."></textarea>
+            </div>
+            <button type="submit" class="btn-glow w-full px-6 py-3.5 bg-gradient-to-r from-accent to-amber rounded-xl text-sm font-bold text-dark">
+              Send Message
+              <i class="ph ph-paper-plane-tilt ml-2"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // ---------- Modal Logic ----------
+    const modal = document.getElementById('contactModal');
+    function openModal() {
+      modal.classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+    function handleOverlayClick(e) {
+      if (e.target === modal) closeModal();
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.innerHTML = '<i class="ph-fill ph-check-circle mr-2"></i> Message Sent!';
+      btn.classList.remove('from-accent', 'to-amber');
+      btn.classList.add('from-green-500', 'to-emerald-400');
+      setTimeout(() => {
+        closeModal();
+        btn.innerHTML = 'Send Message <i class="ph ph-paper-plane-tilt ml-2"></i>';
+        btn.classList.remove('from-green-500', 'to-emerald-400');
+        btn.classList.add('from-accent', 'to-amber');
+        e.target.reset();
+      }, 2000);
+    }
+
+    // ---------- Navbar Scroll ----------
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('navbar-scrolled');
+      } else {
+        navbar.classList.remove('navbar-scrolled');
+      }
+    });
+
+    // ---------- Mobile Menu ----------
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    // ---------- Scroll Reveal ----------
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealElements.forEach((el) => revealObserver.observe(el));
+  </script>
+</body>
+</html>
